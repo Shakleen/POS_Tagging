@@ -1,2 +1,5 @@
 **/.vscode
-**/.venv
+**/venv
+**/.vector_cache
+**/.data
+**/__pycache__
