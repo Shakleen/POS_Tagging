@@ -29,3 +29,12 @@ class UDPOS(HyperParameters):
                               min_freq=2,
                               unk_init=torch.Tensor.normal_)
         self.UD_TAGS.build_vocab(self.train)
+
+    def get_iterators(self, batch_size: int = 64):
+        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        train_iter, val_iter, test_iter = data.BucketIterator.splits(
+            (self.train, self.val, self.test),
+            batch_size=batch_size,
+            device=device,
+        )
+        return train_iter, val_iter, test_iter
