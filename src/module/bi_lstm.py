@@ -34,12 +34,12 @@ class BiLSTM(LSTM):
         Args:
             inputs (torch.Tensor): A tensor of shape [num_steps, batch_size, 
             embedding_size].
-            Hs (Tuple, optional): Forward and backward hidden states. 
-            Defaults to None.
+            Hs (Tuple, optional): Forward and backward hidden states and 
+            memory cell tuples. Defaults to None.
 
         Returns:
-            Tuple: Returns prediction for each timestep and 
-            a tuple containing forward and backward hidden states.
+            Tuple: Returns prediction for each timestep and a tuple containing 
+            forward and backward hidden states and memory cells.
         """
         f_h, b_h = Hs if Hs is not None else None, None
 
