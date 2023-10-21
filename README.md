@@ -19,15 +19,11 @@ LSTM or Long Short Term Memory is a modern RNN architecture. It has 3 gates for 
 
 The 3 gates are calculated separate weights and biases as below:
 
-$$
-
-\begin{split}\begin{aligned}
+$$\begin{split}\begin{aligned}
 \mathbf{I}_t &= \sigma(\mathbf{X}_t \mathbf{W}_{\textrm{xi}} + \mathbf{H}_{t-1} \mathbf{W}_{\textrm{hi}} + \mathbf{b}_\textrm{i}),\\
 \mathbf{F}_t &= \sigma(\mathbf{X}_t \mathbf{W}_{\textrm{xf}} + \mathbf{H}_{t-1} \mathbf{W}_{\textrm{hf}} + \mathbf{b}_\textrm{f}),\\
 \mathbf{O}_t &= \sigma(\mathbf{X}_t \mathbf{W}_{\textrm{xo}} + \mathbf{H}_{t-1} \mathbf{W}_{\textrm{ho}} + \mathbf{b}_\textrm{o}),
-\end{aligned}\end{split}
-
-$$
+\end{aligned}\end{split}$$
 
 From current step, a temporary **Input Node** tensor is created 
 
