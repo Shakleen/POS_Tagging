@@ -2,10 +2,10 @@ import torch
 from torchtext import data
 from torchtext import datasets
 
-from ..utils.hyperparameters import HyperParameters
+from .data_module import DataModule
 
 
-class UDPOS(HyperParameters):
+class UDPOS(DataModule):
     """Implements mechanism to fetch UDPOS dataset from torch text."""
 
     def __init__(self) -> None:
@@ -14,6 +14,7 @@ class UDPOS(HyperParameters):
         self._create_fields()
         self._import_dataset()
         self._build_vocab()
+        self._build_iterators()
 
     def _create_fields(self):
         self.TEXT = data.Field(lower=True)
@@ -30,11 +31,15 @@ class UDPOS(HyperParameters):
                               unk_init=torch.Tensor.normal_)
         self.UD_TAGS.build_vocab(self.train)
 
-    def get_iterators(self, batch_size: int = 64):
+    def _build_iterators(self, batch_size: int = 64):
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        train_iter, val_iter, test_iter = data.BucketIterator.splits(
+        self.train_iter, self.val_iter, self.test_iter = data.BucketIterator.splits(
             (self.train, self.val, self.test),
             batch_size=batch_size,
             device=device,
         )
-        return train_iter, val_iter, test_iter
+
+    def get_dataloader(self, train: bool):
+        return self.train_iter if train else self.val_iter
+
+    def test_dataloader(self): return self.test_iter

@@ -1,5 +1,5 @@
 # Part of Speech Tagging
-Perform Part-of-Speech tagging using variations of LSTM models and Transformers, on Universal Dependencies English Web Treebank **(UDPOS) dataset**. I used this project to implement these architectures from scratch. I also learnt about the generational improvements brought about by each architectural changes.
+Perform Part-of-Speech tagging using variations of LSTM models, on Universal Dependencies English Web Treebank **(UDPOS) dataset**. I used this project to implement these architectures from scratch. As a result, I am able to fully understand the inner workings of each architecture and how they are built on top of one another.
 
 ![Python](https://img.shields.io/badge/Python-20232A?style=for-the-badge&logo=python)
 ![PyTorch](https://img.shields.io/badge/PyTorch-20232A?style=for-the-badge&logo=pytorch)
@@ -19,18 +19,18 @@ LSTM or Long Short Term Memory is a modern RNN architecture. It has 3 gates for 
 
 The 3 gates are calculated separate weights and biases as below:
 
-$$  
+$$
 \begin{split}\begin{aligned}
 \mathbf{I}_t &= \sigma(\mathbf{X}_t \mathbf{W}_{\textrm{xi}} + \mathbf{H}_{t-1} \mathbf{W}_{\textrm{hi}} + \mathbf{b}_\textrm{i})\\
 \mathbf{F}_t &= \sigma(\mathbf{X}_t \mathbf{W}_{\textrm{xf}} + \mathbf{H}_{t-1} \mathbf{W}_{\textrm{hf}} + \mathbf{b}_\textrm{f})\\
 \mathbf{O}_t &= \sigma(\mathbf{X}_t \mathbf{W}_{\textrm{xo}} + \mathbf{H}_{t-1} \mathbf{W}_{\textrm{ho}} + \mathbf{b}_\textrm{o})
-\end{aligned}\end{split}  
+\end{aligned}\end{split}
 $$
 
 From current step, a temporary **Input Node** tensor is created 
 
-$$  
-\tilde{\mathbf{C}}_t = \textrm{tanh}(\mathbf{X}_t \mathbf{W}_{\textrm{xc}} + \mathbf{H}_{t-1} \mathbf{W}_{\textrm{hc}} + \mathbf{b}_\textrm{c})  
+$$
+\tilde{\mathbf{C}}_t = \textrm{tanh}(\mathbf{X}_t \mathbf{W}_{\textrm{xc}} + \mathbf{H}_{t-1} \mathbf{W}_{\textrm{hc}} + \mathbf{b}_\textrm{c})
 $$
 
 Then the gates and the input node is used, at time step t, to calculate the memory cell $\mathbf{C}_t = \mathbf{F}_t \odot \mathbf{C}_{t-1} + \mathbf{I}_t \odot \tilde{\mathbf{C}}_t$ and hidden state $\mathbf{H}_t = \mathbf{O}_t \odot \tanh(\mathbf{C}_t)$
@@ -47,11 +47,11 @@ A bidirectional RNN architecture basically processes the sequence of data twice,
 
 Mathematically
 
-$$  
+$$
 \begin{split}\begin{aligned}
 \overrightarrow{\mathbf{H}}_t &= \phi(\mathbf{X}_t \mathbf{W}_{\textrm{xh}}^{(f)} + \overrightarrow{\mathbf{H}}_{t-1} \mathbf{W}_{\textrm{hh}}^{(f)}  + \mathbf{b}_\textrm{h}^{(f)})\\
 \overleftarrow{\mathbf{H}}_t &= \phi(\mathbf{X}_t \mathbf{W}_{\textrm{xh}}^{(b)} + \overleftarrow{\mathbf{H}}_{t+1} \mathbf{W}_{\textrm{hh}}^{(b)}  + \mathbf{b}_\textrm{h}^{(b)})
-\end{aligned}\end{split}  
+\end{aligned}\end{split}
 $$
 
 Visually
@@ -66,8 +66,8 @@ A multi-layer LSTM model takes the hidden states of the previous layer as input 
 
 Mathematically,
 
-$$  
-\mathbf{H}_t^{(l)} = \phi_l(\mathbf{H}_t^{(l-1)} \mathbf{W}_{\textrm{xh}}^{(l)} + \mathbf{H}_{t-1}^{(l)} \mathbf{W}_{\textrm{hh}}^{(l)}  + \mathbf{b}_\textrm{h}^{(l)})  
+$$
+\mathbf{H}_t^{(l)} = \phi_l(\mathbf{H}_t^{(l-1)} \mathbf{W}_{\textrm{xh}}^{(l)} + \mathbf{H}_{t-1}^{(l)} \mathbf{W}_{\textrm{hh}}^{(l)}  + \mathbf{b}_\textrm{h}^{(l)})
 $$
 
 Visually,
@@ -75,10 +75,6 @@ Visually,
 <center><img src="images/deep_rnn_diagram.jpg"></center>
 
 The idea is that like multi-layer perceptrons, multi-layer RNNs will learn something new in each layer and get progressively better at learning patterns in the underlying data.
-
-### 2.4. Attention in LSTM
-
-### 2.5. Transformers
 
 ## 3. Architecture Comparison
 
