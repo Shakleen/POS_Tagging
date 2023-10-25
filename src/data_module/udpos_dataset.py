@@ -40,6 +40,11 @@ class UDPOS(DataModule):
         )
 
     def get_dataloader(self, train: bool):
-        return self.train_iter if train else self.val_iter
+        iter = self.train_iter if train else self.val_iter
 
-    def test_dataloader(self): return self.test_iter
+        for batch in iter:
+            yield [batch.text, batch.udtags]
+
+    def test_dataloader(self):
+        for batch in self.test_iter:
+            yield [batch.text, batch.udtags]
