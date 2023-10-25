@@ -9,6 +9,8 @@ Perform Part-of-Speech tagging using variations of LSTM models, on Universal Dep
 
 ## 1. Dataset
 
+UPDOS is a parsed text corpus dataset that clarifies syntactic or semantic sentence structure.
+
 ## 2. Overview of Architectures
 
 Architectural diagrams are collected from [Dive into Deep Learning](https://d2l.ai/) book.
@@ -19,21 +21,31 @@ LSTM or Long Short Term Memory is a modern RNN architecture. It has 3 gates for 
 
 The 3 gates are calculated separate weights and biases as below:
 
-$$
+```math
 \begin{split}\begin{aligned}
 \mathbf{I}_t &= \sigma(\mathbf{X}_t \mathbf{W}_{\textrm{xi}} + \mathbf{H}_{t-1} \mathbf{W}_{\textrm{hi}} + \mathbf{b}_\textrm{i})\\
 \mathbf{F}_t &= \sigma(\mathbf{X}_t \mathbf{W}_{\textrm{xf}} + \mathbf{H}_{t-1} \mathbf{W}_{\textrm{hf}} + \mathbf{b}_\textrm{f})\\
 \mathbf{O}_t &= \sigma(\mathbf{X}_t \mathbf{W}_{\textrm{xo}} + \mathbf{H}_{t-1} \mathbf{W}_{\textrm{ho}} + \mathbf{b}_\textrm{o})
 \end{aligned}\end{split}
-$$
+```
 
 From current step, a temporary **Input Node** tensor is created 
 
-$$
+```math
 \tilde{\mathbf{C}}_t = \textrm{tanh}(\mathbf{X}_t \mathbf{W}_{\textrm{xc}} + \mathbf{H}_{t-1} \mathbf{W}_{\textrm{hc}} + \mathbf{b}_\textrm{c})
-$$
+```
 
-Then the gates and the input node is used, at time step t, to calculate the memory cell $\mathbf{C}_t = \mathbf{F}_t \odot \mathbf{C}_{t-1} + \mathbf{I}_t \odot \tilde{\mathbf{C}}_t$ and hidden state $\mathbf{H}_t = \mathbf{O}_t \odot \tanh(\mathbf{C}_t)$
+Then the gates and the input node is used, at time step t, to calculate the memory cell 
+
+```math
+\mathbf{C}_t = \mathbf{F}_t \odot \mathbf{C}_{t-1} + \mathbf{I}_t \odot \tilde{\mathbf{C}}_t
+```
+
+and hidden state 
+
+```math
+\mathbf{H}_t = \mathbf{O}_t \odot \tanh(\mathbf{C}_t)
+```
 
 Visually the operations form the following diagram:
 
@@ -45,16 +57,17 @@ Compared to vanilla RNNs, LSTM are able to capture and retain context for longer
 
 A bidirectional RNN architecture basically processes the sequence of data twice, once from left to right and another time from right to left. It uses two separate sets of parameters to keep track of the hidden states. Afterwards, the hidden states are concatenated. 
 
-Mathematically
+Mathematically,
 
-$$
+```math
 \begin{split}\begin{aligned}
 \overrightarrow{\mathbf{H}}_t &= \phi(\mathbf{X}_t \mathbf{W}_{\textrm{xh}}^{(f)} + \overrightarrow{\mathbf{H}}_{t-1} \mathbf{W}_{\textrm{hh}}^{(f)}  + \mathbf{b}_\textrm{h}^{(f)})\\
 \overleftarrow{\mathbf{H}}_t &= \phi(\mathbf{X}_t \mathbf{W}_{\textrm{xh}}^{(b)} + \overleftarrow{\mathbf{H}}_{t+1} \mathbf{W}_{\textrm{hh}}^{(b)}  + \mathbf{b}_\textrm{h}^{(b)})
 \end{aligned}\end{split}
-$$
+```
 
-Visually
+
+Visually,
 
 <center><img src="images/bidirectional_diagram.jpg"></center>
 
@@ -66,9 +79,9 @@ A multi-layer LSTM model takes the hidden states of the previous layer as input 
 
 Mathematically,
 
-$$
+```math
 \mathbf{H}_t^{(l)} = \phi_l(\mathbf{H}_t^{(l-1)} \mathbf{W}_{\textrm{xh}}^{(l)} + \mathbf{H}_{t-1}^{(l)} \mathbf{W}_{\textrm{hh}}^{(l)}  + \mathbf{b}_\textrm{h}^{(l)})
-$$
+```
 
 Visually,
 
@@ -78,11 +91,13 @@ The idea is that like multi-layer perceptrons, multi-layer RNNs will learn somet
 
 ## 3. Architecture Comparison
 
-### 3.1. Training Time
+Bi-directionality adds a significant improvement to the base LSTM layer. This is evident in the following graph:
 
-### 3.2. Runtime
+<center><img src="images/lstm_vs_bi-lstm.png"></center>
 
-### 3.3. Performance
+The bi-lstm model's inference time is nearly twice as long, but is worth the additional performance benefits. However, this is not true for the deep bi-lstm model. Because it doesn't achieve a significant performance improvement. Moreover, its inference time is nearly 4 times that of the base model.
+
+<center><img src="images/lstm_vs_deep-bi-lstm.png"></center>
 
 
 # Acknowledgements
