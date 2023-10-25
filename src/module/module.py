@@ -15,6 +15,9 @@ class Module(nn.Module, HyperParameters):  # @save
 
     def loss(self, y_hat, y):
         raise NotImplementedError
+    
+    def accuracy(self, y_hat, y):
+        raise NotImplementedError
 
     def forward(self, X):
         assert hasattr(self, 'net'), 'Neural network is not defined'

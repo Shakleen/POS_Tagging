@@ -1,5 +1,6 @@
 import torch
 from torch import nn
+from torch.nn import functional as F
 
 from .module import Module
 from .deep_lstm import DeepLSTM
@@ -48,6 +49,8 @@ class PosTagger(Module):
 
         self.fc = nn.LazyLinear(self.num_outputs)
 
+        self.configure_optimizers()
+
     def forward(self, X):
         """Performs forward propagation.
 
@@ -62,3 +65,36 @@ class PosTagger(Module):
         embeds = self.embedding(X)
         outputs, _ = self.lstm(embeds)
         return self.fc(outputs)
+
+    def configure_optimizers(self):
+        self.optim = torch.optim.Adam(self.parameters())
+
+    def loss(self, y_hat, y):
+        """Calculates the loss between prediction and target.
+
+        Args:
+            y_hat (torch.Tensor): Predictions.
+            y (torch.Tensor): Target labels.
+
+        Returns:
+            torch.Tensor: Loss value.
+        """
+        return F.cross_entropy(input=y_hat,
+                               target=y,
+                               ignore_index=self.padding_idx,
+                               reduce='mean')
+
+    def accuracy(self, y_hat, y):
+        """Calculates the accuracy of the predictions.
+
+        Args:
+            y_hat (torch.Tensor): Predictions.
+            y (torch.Tensor): Target labels.
+
+        Returns:
+            torch.Tensor: Accuracy value.
+        """
+        y_hat = y_hat.argmax(dim=1, keepdim=True)
+        non_pad_elements = (y != self.padding_idx).nonzero()
+        correct = y_hat[non_pad_elements].squeeze(1).eq(y[non_pad_elements])
+        return correct.sum() / y[non_pad_elements].shape[0]
