@@ -2,6 +2,7 @@
 Perform Part-of-Speech tagging using variations of LSTM models, on Universal Dependencies English Web Treebank **(UDPOS) dataset**. I used this project to implement these architectures from scratch. As a result, I am able to fully understand the inner workings of each architecture and how they are built on top of one another.
 
 ![Python](https://img.shields.io/badge/Python-20232A?style=for-the-badge&logo=python)
+![Jupyter](https://img.shields.io/badge/jupyter-20232A?style=for-the-badge&logo=jupyter)
 ![PyTorch](https://img.shields.io/badge/PyTorch-20232A?style=for-the-badge&logo=pytorch)
 ![TorchText](https://img.shields.io/badge/TorchText-20232A?style=for-the-badge&logo=pytorch)
 ![Matplotlib](https://img.shields.io/badge/matplotlib-20232A?style=for-the-badge&logo=matplotlib)
@@ -49,7 +50,9 @@ and hidden state
 
 Visually the operations form the following diagram:
 
-<center><img src="images/lstm_diagram.jpg"></center>
+<p align="center">
+  <img src="images/lstm_diagram.jpg">
+</p>
 
 Compared to vanilla RNNs, LSTM are able to capture and retain context for longer sequence of tokens. However, they require 4 times more memory to do so. 
 
@@ -69,7 +72,9 @@ Mathematically,
 
 Visually,
 
-<center><img src="images/bidirectional_diagram.jpg"></center>
+<p align="center">
+  <img src="images/bidirectional_diagram.jpg">
+</p>
 
 The benefit of this architecture is that it captures information not only from the previous words, but also from the next words. The concept stays the same for a bidirectional LSTM model as well. Except the parameters and inner workings change, instead of using two separate RNN modules for forward and backward passes, we use two LSTM models.
 
@@ -85,7 +90,9 @@ Mathematically,
 
 Visually,
 
-<center><img src="images/deep_rnn_diagram.jpg"></center>
+<p align="center">
+  <img src="images/deep_rnn_diagram.jpg">
+</p>
 
 The idea is that like multi-layer perceptrons, multi-layer RNNs will learn something new in each layer and get progressively better at learning patterns in the underlying data.
 
@@ -93,11 +100,15 @@ The idea is that like multi-layer perceptrons, multi-layer RNNs will learn somet
 
 Bi-directionality adds a significant improvement to the base LSTM layer. This is evident in the following graph:
 
-<center><img src="images/lstm_vs_bi-lstm.png"></center>
+<p align="center">
+  <img src="images/lstm_vs_bi-lstm.png">
+</p>
 
 The bi-lstm model's inference time is nearly twice as long, but is worth the additional performance benefits. However, this is not true for the deep bi-lstm model. Because it doesn't achieve a significant performance improvement. Moreover, its inference time is nearly 4 times that of the base model.
 
-<center><img src="images/lstm_vs_deep-bi-lstm.png"></center>
+<p align="center">
+  <img src="images/lstm_vs_deep-bi-lstm.png">
+</p>
 
 
 # Acknowledgements
